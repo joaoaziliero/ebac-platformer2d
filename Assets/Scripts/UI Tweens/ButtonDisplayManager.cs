@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public class ButtonDisplayManager : MonoBehaviour
 {
+    //Lista de referências aos botões presentes na cena.
     public List<GameObject> buttonReferences;
 
     [Header("Animation Settings")]
@@ -23,6 +24,9 @@ public class ButtonDisplayManager : MonoBehaviour
 
     private void OnEnable()
     {
+        // Com este loop, cada botão é animado passando de dimensões nulas
+        // até seu tamanho máximo, e a animação do próximo botão fica mais lenta
+        // em relação ao botão anterior.
         foreach(var button in buttonReferences)
         {
             button.transform
