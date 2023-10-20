@@ -10,9 +10,9 @@ public class ButtonDisplayManager : MonoBehaviour
 
     [Header("Animation Settings")]
     // duration: duração da animação para cada botão;
-    [SerializeField] public float duration;
+    public float duration;
     // delay: duração relativa ao intervalo entre a animação de um botão e a do próximo.
-    [SerializeField] public float delay;
+    public float delay;
 
     private void Awake()
     {
