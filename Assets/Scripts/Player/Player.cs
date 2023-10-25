@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     // Animator do jogador
     private Animator _animator;
 
+    private BoxCollider2D _boxCollider2D;
+
     [Header("Movement Settings")]
     // Velocidade de caminhada
     public float walkingSpeed;
@@ -77,7 +79,6 @@ public class Player : MonoBehaviour
         _tweenFallLeft,
         _tweenRedoLeft;
 
-
     private void Start()
     {
         Init();
@@ -85,6 +86,11 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (!_boxCollider2D.isActiveAndEnabled)
+        {
+            this.enabled = false;
+        }
+
         HandleMovement();
         HandleJumps();
 
@@ -98,6 +104,7 @@ public class Player : MonoBehaviour
     {
         _rigidBody = gameObject.GetComponent<Rigidbody2D>();
         _animator = gameObject.GetComponentInChildren<Animator>();
+        _boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
         
         _currentSpeed = walkingSpeed;
 

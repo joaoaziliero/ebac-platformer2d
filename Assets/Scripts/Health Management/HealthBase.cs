@@ -20,9 +20,6 @@ public class HealthBase : MonoBehaviour
 
     private void Kill()
     {
-        var player = GetComponent<Player>();
-        if (player != null) player.enabled = false;
-
         GetComponent<BoxCollider2D>().enabled = false;
         GetComponent<Rigidbody2D>().gravityScale = 0;
         _animator.SetTrigger("Die");
