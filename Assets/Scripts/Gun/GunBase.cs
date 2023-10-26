@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Aqui controlamos a arma do jogador usando um pool
+/// para ativar os projeteis quando necessario.
+/// </summary>
+
 public class GunBase : MonoBehaviour
 {
     private GameObject _cannon;
@@ -33,11 +38,6 @@ public class GunBase : MonoBehaviour
 
     private void Shoot()
     {
-        /*
-        var projectile = Instantiate(projectilePrefab);
-        projectile.transform.position = _cannon.transform.position;
-        */
-
         for (int i = 0; i < poolSize; i++)
         {
             var projectile = _pooledProjectiles[i];

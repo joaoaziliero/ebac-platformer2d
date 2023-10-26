@@ -2,24 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Script basico para itens coletaveis em geral.
+/// </summary>
+
 public class CollectableBase : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            DisableCollider();
             OnCollect();
         }
     }
-
-    protected void DisableCollider()
+    protected virtual void OnCollect()
     {
-        GetComponent<Collider2D>().enabled = false;
+        DisableCollider();
     }
 
-    protected virtual void OnCollect(float timeToDestroy = 0)
+    private void DisableCollider()
     {
-        Destroy(gameObject, timeToDestroy);
+        GetComponent<Collider2D>().enabled = false;
     }
 }

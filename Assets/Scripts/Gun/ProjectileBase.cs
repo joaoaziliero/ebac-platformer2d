@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Aqui definimos o comportamento dos projeteis
+/// de acordo com a orientacao espacial do jogador.
+/// </summary>
+
 public class ProjectileBase : MonoBehaviour
 {
     private GameObject _player;
@@ -35,11 +40,11 @@ public class ProjectileBase : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        var enemy = collision.gameObject;
+        var obj = collision.gameObject;
 
-        if (enemy.GetComponent<EnemyBase>() != null)
+        if (obj.CompareTag("Enemy"))
         {
-            enemy.GetComponent<HealthBase>().Damage(damage);
+            obj.GetComponent<HealthBase>().Damage(damage);
             gameObject.SetActive(false);
         }
     }

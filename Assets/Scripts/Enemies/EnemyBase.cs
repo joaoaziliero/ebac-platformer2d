@@ -1,7 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+/// <summary>
+/// Script que interage com o HealthBase do player.
+/// Pode spawnar um item coletavel quando o inimigo morre.
+/// </summary>
 
 public class EnemyBase : MonoBehaviour
 {
@@ -17,6 +22,12 @@ public class EnemyBase : MonoBehaviour
         _animator = GetComponentInChildren<Animator>();
 
         _isRunning = true;
+
+        GameObject
+            .Find("PFB_Menu")
+            .GetComponent<Button>()
+            .onClick
+            .AddListener(() => _isRunning = false);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

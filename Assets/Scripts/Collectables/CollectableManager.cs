@@ -4,6 +4,11 @@ using UnityEngine;
 using Ebac.Core.Singleton;
 using TMPro;
 
+/// <summary>
+/// Gerenciador tipo Singleton que trata dos itens coletaveis
+/// presentes numa cena (por ora, apenas moedas).
+/// </summary>
+
 public class CollectableManager : Singleton<CollectableManager>
 {
     public int coins;
@@ -22,6 +27,11 @@ public class CollectableManager : Singleton<CollectableManager>
     public void AddCoins(int amount = 1)
     {
         coins += amount;
-        _coinDisplay.text = (coins < 10) ? "x0" + coins.ToString() : "x" + coins.ToString();
+
+        _coinDisplay
+            .text
+            = (coins < 10)
+            ? "x0" + coins.ToString()
+            : "x" + coins.ToString();
     }
 }

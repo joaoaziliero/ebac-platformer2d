@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
+/// <summary>
+/// Script associado a moedas coletaveis,
+/// implementa animacao por tweening
+/// e interage com o Gerenciador de Coletaveis.
+/// </summary>
+
 public class CollectableCoin : CollectableBase
 {
     private Tween _spawn, _wave, _shrink;
@@ -28,12 +34,12 @@ public class CollectableCoin : CollectableBase
             .Pause();
     }
 
-    protected override void OnCollect(float timeToDestroy = 0)
+    protected override void OnCollect()
     {
+        base.OnCollect();
         _shrink.Play();
         CollectableManager.Instance.AddCoins();
-        Debug.Log(CollectableManager.Instance.coins);
-        base.OnCollect(timeToDestroy);
+        Destroy(gameObject, 1);
     }
 
     private void OnDestroy()

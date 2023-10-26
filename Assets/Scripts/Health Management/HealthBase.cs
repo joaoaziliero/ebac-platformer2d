@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// O HealthBase gerencia os pontos de vida,
+/// tanto do jogador quanto dos inimigos.
+/// </summary>
+
 public class HealthBase : MonoBehaviour
 {
     private FlashColor _flashColor;
