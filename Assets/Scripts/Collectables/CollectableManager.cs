@@ -6,13 +6,16 @@ using TMPro;
 
 /// <summary>
 /// Gerenciador tipo Singleton que trata dos itens coletaveis
-/// presentes numa cena (por ora, apenas moedas).
+/// presentes numa cena.
 /// </summary>
 
 public class CollectableManager : Singleton<CollectableManager>
 {
-    public int coins;
-    public TMP_Text _coinDisplay;
+    public SOInt collectables;
+
+    public TMP_Text coinHud;
+    public TMP_Text berryHud;
+    public TMP_Text bombHud;
 
     private void Start()
     {
@@ -21,17 +24,28 @@ public class CollectableManager : Singleton<CollectableManager>
 
     private void Reset()
     {
-        coins = 0;
+        collectables.totalCoins = 0;
+        collectables.totalBerries = 0;
+        collectables.totalBombs = 0;
     }
 
     public void AddCoins(int amount = 1)
     {
-        coins += amount;
+        collectables.totalCoins += amount;
+        coinHud.text = (collectables.totalCoins < 10)
+            ? "x0" + collectables.totalCoins.ToString()
+            : "x" + collectables.totalCoins.ToString();
+    }
 
-        _coinDisplay
-            .text
-            = (coins < 10)
-            ? "x0" + coins.ToString()
-            : "x" + coins.ToString();
+    public void AddBerries(int amount = 1)
+    {
+        collectables.totalBerries += amount;
+        berryHud.text = collectables.totalBerries.ToString();
+    }
+
+    public void AddBombs(int amount = 1)
+    {
+        collectables.totalBombs += amount;
+        bombHud.text = collectables.totalBombs.ToString();
     }
 }
