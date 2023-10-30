@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using PlayerSetup;
 
 /// <summary>
 /// A classe Player implementa a movimentacao bidimensional de um Rigidbody2D
@@ -18,6 +19,8 @@ public class Player : MonoBehaviour
 
     private BoxCollider2D _boxCollider2D;
 
+    public SOPlayerSetup _setup;
+    /*
     [Header("Movement Settings")]
     // Velocidade de caminhada
     public float walkingSpeed;
@@ -29,7 +32,7 @@ public class Player : MonoBehaviour
     public float jumpingForce;
     // Duracao do giro do personagem,
     // a direita ou a esquerda
-    public float turnDuration;
+    public float _setup.turnDuration;
 
     [Header("Scaling Settings")]
     // Proporcoes do jogador no pulo
@@ -39,15 +42,16 @@ public class Player : MonoBehaviour
 
     [Header("Ease Settings")]
     // Ease para fazer o tweening das proporcoes
-    public Ease scalingEase;
+    public Ease _setup.scalingEase;
     
     [Header("Scaling Durations")]
     // Duracao do tween de pulo
-    public float jumpScaleTime;
+    public float _setup.jumpScaleTime;
     // Duracao do tween de queda
-    public float fallScaleTime;
+    public float _setup.fallScaleTime;
     // Duracao do tween que refaz as proporcoes originais
-    public float redoScaleTime;
+    public float _setup.redoScaleTime;
+    */
 
     // Velocidade atual do jogador,
     // pode ser para caminhar ou correr
@@ -106,11 +110,11 @@ public class Player : MonoBehaviour
         _animator = gameObject.GetComponentInChildren<Animator>();
         _boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
         
-        _currentSpeed = walkingSpeed;
+        _currentSpeed = _setup.walkingSpeed;
 
         scaleOnRedo = Vector3.one;
-        scaleOnJumpLeft = new Vector3(-scaleOnJump.x, scaleOnJump.y, scaleOnJump.z);
-        scaleOnFallLeft = new Vector3(-scaleOnFall.x, scaleOnFall.y, scaleOnFall.z);
+        scaleOnJumpLeft = new Vector3(-_setup.scaleOnJump.x, _setup.scaleOnJump.y, _setup.scaleOnJump.z);
+        scaleOnFallLeft = new Vector3(-_setup.scaleOnFall.x, _setup.scaleOnFall.y, _setup.scaleOnFall.z);
         scaleOnRedoLeft = new Vector3(-1, 1, 1);
     }
 
@@ -134,12 +138,12 @@ public class Player : MonoBehaviour
             if (!Input.GetKey(KeyCode.LeftControl))
             {
                 _animator.SetBool("Run", false);
-                _currentSpeed = walkingSpeed;
+                _currentSpeed = _setup.walkingSpeed;
             }
             else
             {
                 _animator.SetBool("Run", true);
-                _currentSpeed = runningSpeed;
+                _currentSpeed = _setup.runningSpeed;
             }
         }
 
@@ -148,7 +152,7 @@ public class Player : MonoBehaviour
             if (gameObject.transform.localScale.x < 0)
             {
                 _tweenTurnLeft.Kill();
-                _tweenTurnRight = gameObject.transform.DOScaleX((+1), turnDuration);
+                _tweenTurnRight = gameObject.transform.DOScaleX((+1), _setup.turnDuration);
                 
                 if (_rigidBody.velocity.y != 0)
                 {
@@ -168,7 +172,7 @@ public class Player : MonoBehaviour
             if (gameObject.transform.localScale.x > 0)
             {
                 _tweenTurnRight.Kill();
-                _tweenTurnLeft = gameObject.transform.DOScaleX((-1), turnDuration);
+                _tweenTurnLeft = gameObject.transform.DOScaleX((-1), _setup.turnDuration);
                 
                 if(_rigidBody.velocity.y != 0)
                 {
@@ -191,7 +195,7 @@ public class Player : MonoBehaviour
         {
             // Aqui, garantimos que ocorra friccao no movimento
             // caso a velocidade horizontal do _rigidBody seja nula.
-            _rigidBody.velocity -= friction * _rigidBody.velocity.normalized;
+            _rigidBody.velocity -= _setup.friction * _rigidBody.velocity.normalized;
         }
     }
 
@@ -211,7 +215,7 @@ public class Player : MonoBehaviour
             }
             
             _animator.SetBool("Jump", true);
-            _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, jumpingForce);
+            _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, _setup.jumpingForce);
         }
     }
 
@@ -226,26 +230,26 @@ public class Player : MonoBehaviour
 
         _jumpSequence
             .Append(_tweenJump = gameObject.transform
-            .DOScale(scaleOnJump, jumpScaleTime)
-            .SetEase(scalingEase)
+            .DOScale(_setup.scaleOnJump, _setup.jumpScaleTime)
+            .SetEase(_setup.scalingEase)
             .SetLoops(2, LoopType.Yoyo));
 
         _jumpSequence
             .Append(_tweenFall = gameObject.transform
-            .DOScale(scaleOnFall, fallScaleTime)
-            .SetEase(scalingEase)
+            .DOScale(_setup.scaleOnFall, _setup.fallScaleTime)
+            .SetEase(_setup.scalingEase)
             .SetLoops(2, LoopType.Yoyo));
 
         _jumpSequence
             .Append(_tweenRedo = gameObject.transform
-            .DOScale(scaleOnRedo, redoScaleTime))
-            .SetEase(scalingEase);
+            .DOScale(scaleOnRedo, _setup.redoScaleTime))
+            .SetEase(_setup.scalingEase);
 
         // Esse delay e necessario para evitar
         // conflitos com os tweens que giram
         // o personagem ate a direcao oposta a
         // sua direcao atual.
-        _jumpSequence.SetDelay(turnDuration);
+        _jumpSequence.SetDelay(_setup.turnDuration);
     }
 
     private void TweenJumpLeft() // Equivalente ao TweenJump, mas para pulos a esquerda
@@ -255,22 +259,22 @@ public class Player : MonoBehaviour
 
         _jumpLeftSequence
             .Append(_tweenJump = gameObject.transform
-            .DOScale(scaleOnJumpLeft, jumpScaleTime)
-            .SetEase(scalingEase)
+            .DOScale(scaleOnJumpLeft, _setup.jumpScaleTime)
+            .SetEase(_setup.scalingEase)
             .SetLoops(2, LoopType.Yoyo));
 
         _jumpLeftSequence
             .Append(_tweenFall = gameObject.transform
-            .DOScale(scaleOnFallLeft, fallScaleTime)
-            .SetEase(scalingEase)
+            .DOScale(scaleOnFallLeft, _setup.fallScaleTime)
+            .SetEase(_setup.scalingEase)
             .SetLoops(2, LoopType.Yoyo));
 
         _jumpLeftSequence
             .Append(_tweenRedo = gameObject.transform
-            .DOScale(scaleOnRedoLeft, redoScaleTime))
-            .SetEase(scalingEase);
+            .DOScale(scaleOnRedoLeft, _setup.redoScaleTime))
+            .SetEase(_setup.scalingEase);
 
-        _jumpLeftSequence.SetDelay(turnDuration);
+        _jumpLeftSequence.SetDelay(_setup.turnDuration);
     }
 
     // O KillJumpSequences interrompe tanto o TweenJump
