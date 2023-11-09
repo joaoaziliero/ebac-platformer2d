@@ -11,6 +11,8 @@ using DG.Tweening;
 
 public class CollectableCoin : CollectableBase
 {
+    [Header("Particle System")]
+    public ParticleSystem emitParticlesOnCollect;
     private Tween _spawn, _wave, _shrink;
 
     private void Awake()
@@ -37,6 +39,7 @@ public class CollectableCoin : CollectableBase
     protected override void OnCollect()
     {
         base.OnCollect();
+        emitParticlesOnCollect.Play();
         _shrink.Play();
         CollectableManager.Instance.AddCoins();
         Destroy(gameObject, 1);

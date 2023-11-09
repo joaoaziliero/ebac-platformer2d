@@ -11,6 +11,8 @@ using DG.Tweening;
 
 public class CollectableBerry : CollectableBase
 {
+    [Header("Particle System")]
+    public ParticleSystem emitParticlesOnCollect;
     private Tween _spawn, _wave, _shrink;
 
     private void Awake()
@@ -37,6 +39,7 @@ public class CollectableBerry : CollectableBase
     protected override void OnCollect()
     {
         base.OnCollect();
+        emitParticlesOnCollect.Play();
         _shrink.Play();
         CollectableManager.Instance.AddBerries();
         Destroy(gameObject, 1);

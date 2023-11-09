@@ -11,6 +11,8 @@ using DG.Tweening;
 
 public class CollectableBomb : CollectableBase
 {
+    [Header("Particle System")]
+    public ParticleSystem emitParticlesOnCollect;
     private Tween _spawn, _wave, _shrink;
 
     private void Awake()
@@ -37,6 +39,7 @@ public class CollectableBomb : CollectableBase
     protected override void OnCollect()
     {
         base.OnCollect();
+        emitParticlesOnCollect.Play();
         _shrink.Play();
         CollectableManager.Instance.AddBombs();
         Destroy(gameObject, 1);
