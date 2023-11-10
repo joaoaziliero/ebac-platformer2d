@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using DG.Tweening;
 using PlayerSetup;
 
@@ -19,7 +20,11 @@ public class Player : MonoBehaviour
 
     private BoxCollider2D _boxCollider2D;
 
+    [Header("Setup Script. Obj.")]
     public SOPlayerSetup _setup;
+
+    [HideInInspector]
+    public UnityEvent vfx;
     /*
     [Header("Movement Settings")]
     // Velocidade de caminhada
@@ -160,6 +165,7 @@ public class Player : MonoBehaviour
                 }
             }
 
+            vfx.Invoke();
             _animator.SetBool("Walk", true);
             _rigidBody.velocity = new Vector2((+1) * _currentSpeed, _rigidBody.velocity.y);
 
@@ -180,6 +186,7 @@ public class Player : MonoBehaviour
                 }
             }
 
+            vfx.Invoke();
             _animator.SetBool("Walk", true);
             _rigidBody.velocity = new Vector2((-1) * _currentSpeed, _rigidBody.velocity.y);
         }
@@ -213,7 +220,8 @@ public class Player : MonoBehaviour
             {
                 TweenJumpLeft();
             }
-            
+
+            vfx.Invoke();
             _animator.SetBool("Jump", true);
             _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, _setup.jumpingForce);
         }
