@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
 using PlayerSetup;
+using System.Linq;
 
 /// <summary>
 /// A classe Player implementa a movimentacao bidimensional de um Rigidbody2D
@@ -61,6 +62,8 @@ public class Player : MonoBehaviour
     // Velocidade atual do jogador,
     // pode ser para caminhar ou correr
     private float _currentSpeed;
+
+    private int _jumpCount; // Contagem de pulos antes de cair
     
     private Vector3 scaleOnRedo; // = Vector3.one (proporcoes originais)
 
@@ -116,11 +119,26 @@ public class Player : MonoBehaviour
         _boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
         
         _currentSpeed = _setup.walkingSpeed;
+        _jumpCount = 0;
 
         scaleOnRedo = Vector3.one;
         scaleOnJumpLeft = new Vector3(-_setup.scaleOnJump.x, _setup.scaleOnJump.y, _setup.scaleOnJump.z);
         scaleOnFallLeft = new Vector3(-_setup.scaleOnFall.x, _setup.scaleOnFall.y, _setup.scaleOnFall.z);
         scaleOnRedoLeft = new Vector3(-1, 1, 1);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (_rigidBody.velocity.y <= 0 && ComparePoints(_boxCollider2D, collision)) _jumpCount = 0;
+    }
+
+    private bool ComparePoints(Collider2D collider, Collision2D collision)
+    {
+        return
+        Enumerable
+            .Range(0, 2)
+            .Select(i => collision.GetContact(i).point.y < collider.bounds.center.y)
+            .Aggregate(false, (acc, current) => acc || current);
     }
 
     // O HandleMovement coordena as velocidades do _rigidBody
@@ -210,7 +228,7 @@ public class Player : MonoBehaviour
     // mas para coordenar os pulos do jogador.
     private void HandleJumps()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && _jumpCount < _setup.maxJumps)
         {
             if (gameObject.transform.localScale.x > 0)
             {
@@ -224,6 +242,7 @@ public class Player : MonoBehaviour
             vfx.Invoke();
             _animator.SetBool("Jump", true);
             _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, _setup.jumpingForce);
+            _jumpCount++;
         }
     }
 
