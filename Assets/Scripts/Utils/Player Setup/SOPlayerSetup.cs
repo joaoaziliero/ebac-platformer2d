@@ -17,6 +17,8 @@ namespace PlayerSetup
         public float friction;
         // Forca de pulo
         public float jumpingForce;
+        // Numero maximo de pulos antes de cair
+        public int maxJumps;
         // Duracao do giro do personagem,
         // a direita ou a esquerda
         public float turnDuration;
