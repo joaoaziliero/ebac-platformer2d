@@ -24,6 +24,9 @@ public class Player : MonoBehaviour
     [Header("Setup Script. Obj.")]
     public SOPlayerSetup _setup;
 
+    [Header("Additional SFX")]
+    public AudioSource soundOnJump;
+
     [HideInInspector]
     public UnityEvent vfx;
     /*
@@ -240,6 +243,7 @@ public class Player : MonoBehaviour
             }
 
             vfx.Invoke();
+            soundOnJump.Play();
             _animator.SetBool("Jump", true);
             _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, _setup.jumpingForce);
             _jumpCount++;
