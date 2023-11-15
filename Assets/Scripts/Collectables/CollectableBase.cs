@@ -8,6 +8,9 @@ using UnityEngine;
 
 public class CollectableBase : MonoBehaviour
 {
+    [Header("Sound Effect")]
+    public AudioSource audioSource;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -18,10 +21,16 @@ public class CollectableBase : MonoBehaviour
     protected virtual void OnCollect()
     {
         DisableCollider();
+        PlaySound();
     }
 
     private void DisableCollider()
     {
         GetComponent<Collider2D>().enabled = false;
+    }
+
+    private void PlaySound()
+    {
+        audioSource.Play();
     }
 }
