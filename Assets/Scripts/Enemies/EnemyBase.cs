@@ -15,19 +15,9 @@ public class EnemyBase : MonoBehaviour
 
     private Animator _animator;
 
-    private bool _isRunning;
-
     private void Awake()
     {
         _animator = GetComponentInChildren<Animator>();
-
-        _isRunning = true;
-
-        GameObject
-            .Find("PFB_Menu")
-            .GetComponent<Button>()
-            .onClick
-            .AddListener(() => _isRunning = false);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -38,19 +28,6 @@ public class EnemyBase : MonoBehaviour
         {
             _animator.SetTrigger("Attack");
             obj.GetComponent<HealthBase>().Damage(damage);
-        }
-    }
-
-    private void OnApplicationQuit()
-    {
-        _isRunning = false;
-    }
-
-    private void OnDestroy()
-    {
-        if (spawnOnKill != null && _isRunning)
-        {
-            Instantiate(spawnOnKill).transform.position = gameObject.transform.position;
         }
     }
 }

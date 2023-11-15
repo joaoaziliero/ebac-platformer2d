@@ -28,6 +28,7 @@ public class HealthBase : MonoBehaviour
         GetComponent<BoxCollider2D>().enabled = false;
         GetComponent<Rigidbody2D>().gravityScale = 0;
         _animator.SetTrigger("Die");
+        Instantiate(GetComponent<EnemyBase>().spawnOnKill).transform.position = transform.position;
         Destroy(gameObject, 0.75f);
     }
 
